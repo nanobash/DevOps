@@ -62,6 +62,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # View the documentation for the provider you're using for more
   # information on available options.
 
+  # Uploads pool configuration file (html.conf) to /tmp
+  config.vm.provision "file", source: "./config/php/html.conf", destination: "/tmp/php-pool-html.conf"
+
+  # Uploads php-fpm.conf file to /tmp
+  config.vm.provision "file", source: "./config/php/php-fpm.conf", destination: "/tmp/php-fpm.conf"
+
+  # Uploads nginx html.conf to /tmp
+  config.vm.provision "file", source: "./config/nginx/html.conf", destination: "/tmp/nginx-html.conf"
+
   # Enable provisioning with bash script.
   config.vm.provision "shell", path: "./provision/bootstrap.sh"
 
