@@ -74,6 +74,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Uploads nginx pma.conf to /tmp
   config.vm.provision "file", source: "./config/nginx/pma.conf", destination: "/tmp/nginx-pma.conf"
 
+  # Uploads nginx pga.conf to /tmp
+  config.vm.provision "file", source: "./config/nginx/pga.conf", destination: "/tmp/nginx-pga.conf"
+
   # Enable provisioning with bash script.
   config.vm.provision "shell", path: "./provision/bootstrap.sh"
 

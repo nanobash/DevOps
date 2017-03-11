@@ -55,12 +55,15 @@ sudo apt-get -y install nginx;
 
 # Installs php7.0 and packages
 sudo apt-get -y install php7.0 php7.0-fpm php7.0-cli \
-                        php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql;
+                        php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql php7.0-pgsql;
 
 # Installs mysql-server 5.7
 echo "mysql-server mysql-community-server/root-pass password root" | sudo debconf-set-selections;
 echo "mysql-server mysql-community-server/re-root-pass password root" | sudo debconf-set-selections;
 sudo apt-get -y install mysql-server;
+
+# Installs PostgreSQL 9.6 and phpPgAdmin 5.1
+sudo apt-get -y install postgresql phppgadmin;
 
 # Installs handy utilities
 sudo apt-get -y install htop pcregrep unzip siege;
@@ -87,10 +90,15 @@ sudo rm -rf /tmp/pma*;
 # Configures phpMyAdmin virtual host
 sudo mv "/tmp/nginx-pma.conf" "/etc/nginx/sites-available/pma.conf";
 sudo ln -s "../sites-available/pma.conf" "/etc/nginx/sites-enabled/";
+
+# Configures phpPgAdmin virtual host
+sudo mv "/tmp/nginx-pga.conf" "/etc/nginx/sites-available/pga.conf";
+sudo ln -s "../sites-available/pga.conf" "/etc/nginx/sites-enabled/";
 # **************************************************************************************
 
 # Restart services
 sudo systemctl restart php7.0-fpm.service;
 sudo systemctl restart nginx.service;
 sudo systemctl restart mysql.service;
+sudo systemctl restart postgresql.service
 # **************************************************************************************
