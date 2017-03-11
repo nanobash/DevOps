@@ -5,16 +5,34 @@
 # ************************************************************
 
 # ********************  Adds Dotdeb repository  ****************************************
-echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list;
-echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list;
+REPOSITORIES="
+# Debian jessie repositories
+deb http://httpredir.debian.org/debian jessie main
+deb-src http://httpredir.debian.org/debian jessie main
+
+deb http://security.debian.org/ jessie/updates main
+deb-src http://security.debian.org/ jessie/updates main
+
+# Repository for php7.0
+deb http://packages.dotdeb.org jessie all
+deb-src http://packages.dotdeb.org jessie all
+
+# Repository for mysql-server 5.7
+deb http://repo.mysql.com/apt/debian jessie mysql-5.7
+
+# Repository for PostgreSQL 9.6
+deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
+
+";
+
+printf "$REPOSITORIES" > /etc/apt/sources.list;
+
 
 # Fetch and install the Dotdeb repository GnuPG key
 wget -qO- https://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -;
 # **************************************************************************************
 
 # ********************   Adds mysql 5.7 repository  ************************************
-echo "deb http://repo.mysql.com/apt/debian jessie mysql-5.7" >> /etc/apt/sources.list;
-
 # Fetch and install mysql GPG key
 sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
 # **************************************************************************************
