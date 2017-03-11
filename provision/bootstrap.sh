@@ -37,7 +37,7 @@ sudo apt-get -y install nginx;
 
 # Installs php7.0 and packages
 sudo apt-get -y install php7.0 php7.0-fpm php7.0-cli \
-                        php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring;
+                        php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql;
 
 # Installs mysql-server 5.7
 echo "mysql-server mysql-community-server/root-pass password root" | sudo debconf-set-selections;
@@ -45,7 +45,7 @@ echo "mysql-server mysql-community-server/re-root-pass password root" | sudo deb
 sudo apt-get -y install mysql-server;
 
 # Installs handy utilities
-sudo apt-get -y install htop pcregrep siege;
+sudo apt-get -y install htop pcregrep unzip siege;
 # **************************************************************************************
 
 # Configures php7.0
@@ -57,8 +57,18 @@ sudo mv "/tmp/php-pool-html.conf" "/etc/php/7.0/fpm/pool.d/html.conf";
 sudo rm -f "/etc/nginx/sites-available/default";
 sudo rm -f "/etc/nginx/sites-enabled/default";
 sudo mv "/tmp/nginx-html.conf" "/etc/nginx/sites-available/html.conf";
-cd "/etc/nginx/sites-enabled";
-sudo ln -s "../sites-available/html.conf";
+sudo ln -s "../sites-available/html.conf" "/etc/nginx/sites-enabled/";
+# **************************************************************************************
+
+# Installs and configures phpMyAdmin 4.6.6
+wget -O /tmp/pma.zip https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip;
+sudo unzip -d /tmp/pma /tmp/pma.zip;
+sudo mv /tmp/pma/* /usr/share/phpMyAdmin;
+sudo rm -rf /tmp/pma*;
+
+# Configures phpMyAdmin virtual host
+sudo mv "/tmp/nginx-pma.conf" "/etc/nginx/sites-available/pma.conf";
+sudo ln -s "../sites-available/pma.conf" "/etc/nginx/sites-enabled/";
 # **************************************************************************************
 
 # Restart services
