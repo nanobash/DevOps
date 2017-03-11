@@ -4,7 +4,7 @@
 # *        Maintains debian/jessie64 Operating System        *
 # ************************************************************
 
-# ********************  Adds Dotdeb repository  ****************************************
+# ********************  Manage repositories  ****************************************
 REPOSITORIES="
 # Debian jessie repositories
 deb http://httpredir.debian.org/debian jessie main
@@ -25,16 +25,17 @@ deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
 
 ";
 
+# Add repositories to sources.list
 printf "$REPOSITORIES" > /etc/apt/sources.list;
 
-
-# Fetch and install the Dotdeb repository GnuPG key
+# Fetches and installs the Dotdeb repository GnuPG key
 wget -qO- https://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -;
-# **************************************************************************************
 
-# ********************   Adds mysql 5.7 repository  ************************************
-# Fetch and install mysql GPG key
+# Fetches and installs mysql GPG key
 sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
+
+# Imports PostgreSQL 9.6 repository signing key
+wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -;
 # **************************************************************************************
 
 # ********************  Basic Operations  **********************************************
@@ -50,50 +51,67 @@ sudo apt-get -y update;
 sudo apt-get -y upgrade;
 # **************************************************************************************
 
+# Installs handy utilities
+sudo apt-get -y install htop pcregrep unzip siege;
+
 # Installs nginx web server
 sudo apt-get -y install nginx;
 
 # Installs php7.0 and packages
 sudo apt-get -y install php7.0 php7.0-fpm php7.0-cli \
                         php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql php7.0-pgsql;
+# **************************************************************************************
 
-# Installs mysql-server 5.7
+# Configures nginx web server
+if [ -f /etc/nginx/sites-available/default ]; then
+    sudo rm -f "/etc/nginx/sites-available/default";
+    sudo rm -f "/etc/nginx/sites-enabled/default";
+fi
+
+sudo mv "/tmp/nginx-html.conf" "/etc/nginx/sites-available/html.conf";
+
+if [ ! -f /etc/nginx/sites-enabled/html.conf ]; then
+    sudo ln -s "../sites-available/html.conf" "/etc/nginx/sites-enabled/";
+fi
+# **************************************************************************************
+
+# Configures php7.0
+if [ -f /etc/php/7.0/fpm/pool.d/www.conf ]; then
+    sudo rm -f "/etc/php/7.0/fpm/pool.d/www.conf";
+fi
+
+sudo mv "/tmp/php-fpm.conf" "/etc/php/7.0/fpm/php-fpm.conf";
+sudo mv "/tmp/php-pool-html.conf" "/etc/php/7.0/fpm/pool.d/html.conf";
+# **************************************************************************************
+
+# Installs mysql-server 5.7, phpMyAdmin 4.6.6 and configures it
+echo "mysql-community-server mysql-community-server/data-dir select ''" | sudo debconf-set-selections;
 echo "mysql-server mysql-community-server/root-pass password root" | sudo debconf-set-selections;
 echo "mysql-server mysql-community-server/re-root-pass password root" | sudo debconf-set-selections;
 sudo apt-get -y install mysql-server;
 
-# Installs PostgreSQL 9.6 and phpPgAdmin 5.1
+sudo mv "/tmp/nginx-pma.conf" "/etc/nginx/sites-available/pma.conf";
+
+if [ ! -f /etc/nginx/sites-enabled/pma.conf ]; then
+    sudo ln -s "../sites-available/pma.conf" "/etc/nginx/sites-enabled/";
+fi
+
+if [ ! -f /usr/share/phpMyAdmin ]; then
+    wget -O /tmp/pma.zip https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip;
+    sudo unzip -d /tmp/pma /tmp/pma.zip;
+    sudo mv /tmp/pma/* /usr/share/phpMyAdmin;
+    sudo rm -rf /tmp/pma*;
+fi
+# **************************************************************************************
+
+# Installs PostgreSQL 9.6, phpPgAdmin 5.1 and configures pga virtual host
 sudo apt-get -y install postgresql phppgadmin;
 
-# Installs handy utilities
-sudo apt-get -y install htop pcregrep unzip siege;
-# **************************************************************************************
-
-# Configures php7.0
-sudo rm -f "/etc/php/7.0/fpm/pool.d/www.conf";
-sudo mv "/tmp/php-fpm.conf" "/etc/php/7.0/fpm/php-fpm.conf";
-sudo mv "/tmp/php-pool-html.conf" "/etc/php/7.0/fpm/pool.d/html.conf";
-
-# Configures nginx web server
-sudo rm -f "/etc/nginx/sites-available/default";
-sudo rm -f "/etc/nginx/sites-enabled/default";
-sudo mv "/tmp/nginx-html.conf" "/etc/nginx/sites-available/html.conf";
-sudo ln -s "../sites-available/html.conf" "/etc/nginx/sites-enabled/";
-# **************************************************************************************
-
-# Installs and configures phpMyAdmin 4.6.6
-wget -O /tmp/pma.zip https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip;
-sudo unzip -d /tmp/pma /tmp/pma.zip;
-sudo mv /tmp/pma/* /usr/share/phpMyAdmin;
-sudo rm -rf /tmp/pma*;
-
-# Configures phpMyAdmin virtual host
-sudo mv "/tmp/nginx-pma.conf" "/etc/nginx/sites-available/pma.conf";
-sudo ln -s "../sites-available/pma.conf" "/etc/nginx/sites-enabled/";
-
-# Configures phpPgAdmin virtual host
 sudo mv "/tmp/nginx-pga.conf" "/etc/nginx/sites-available/pga.conf";
-sudo ln -s "../sites-available/pga.conf" "/etc/nginx/sites-enabled/";
+
+if [ ! -f /etc/nginx/sites-enabled/pga.conf ]; then
+    sudo ln -s "../sites-available/pga.conf" "/etc/nginx/sites-enabled/";
+fi
 # **************************************************************************************
 
 # Restart services
