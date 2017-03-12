@@ -96,7 +96,7 @@ if [ ! -f /etc/nginx/sites-enabled/pma.conf ]; then
     sudo ln -s "../sites-available/pma.conf" "/etc/nginx/sites-enabled/";
 fi
 
-if [ ! -f /usr/share/phpMyAdmin ]; then
+if [ ! -d /usr/share/phpMyAdmin ]; then
     wget -O /tmp/pma.zip https://files.phpmyadmin.net/phpMyAdmin/4.6.6/phpMyAdmin-4.6.6-all-languages.zip;
     sudo unzip -d /tmp/pma /tmp/pma.zip;
     sudo mv /tmp/pma/* /usr/share/phpMyAdmin;
