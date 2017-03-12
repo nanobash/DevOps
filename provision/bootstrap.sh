@@ -120,3 +120,9 @@ sudo systemctl restart nginx.service;
 sudo systemctl restart mysql.service;
 sudo systemctl restart postgresql.service
 # **************************************************************************************
+
+# CREATES PostgreSQL user admin (password admin) and grants all privileges on database called admin
+sudo -u postgres psql -c "CREATE DATABASE admin ENCODING 'UTF8' LC_COLLATE='en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8'";
+sudo -u postgres psql -c "CREATE ROLE admin WITH LOGIN PASSWORD 'admin'";
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE admin TO admin";
+# **************************************************************************************
