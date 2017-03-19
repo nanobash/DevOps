@@ -58,7 +58,7 @@ sudo apt-get -y install htop pcregrep unzip siege;
 sudo apt-get -y install nginx;
 
 # Installs php7.0 and packages
-sudo apt-get -y install php7.0 php7.0-fpm php7.0-cli \
+sudo apt-get -y install php7.0 php7.0-fpm php7.0-cli php7.0-xdebug \
                         php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql php7.0-pgsql;
 # **************************************************************************************
 
