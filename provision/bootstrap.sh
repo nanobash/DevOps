@@ -51,6 +51,9 @@ sudo apt-get -y update;
 sudo apt-get -y upgrade;
 # **************************************************************************************
 
+# Installs dependent packages
+sudo apt install zlib1g-dev;
+
 # Installs handy utilities
 sudo apt-get -y install htop pcregrep unzip siege;
 
@@ -112,6 +115,16 @@ sudo mv "/tmp/nginx-pga.conf" "/etc/nginx/sites-available/pga.conf";
 if [ ! -f /etc/nginx/sites-enabled/pga.conf ]; then
     sudo ln -s "../sites-available/pga.conf" "/etc/nginx/sites-enabled/";
 fi
+# **************************************************************************************
+
+# Installs python3.6
+mkdir -p /home/vagrant/Downloads/python3.6;
+wget -O /home/vagrant/Downloads/python3.6.tar.xz https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz;
+tar -xf /home/vagrant/Downloads/python3.6.tar.xz -C /home/vagrant/Downloads/python3.6;
+cd /home/vagrant/Downloads/python3.6/Python-3.6.1;
+./configure;
+make altinstall;
+rm /home/vagrant/Downloads/python3.6.tar.xz;
 # **************************************************************************************
 
 # Restart services
