@@ -118,13 +118,15 @@ fi
 # **************************************************************************************
 
 # Installs python3.6
-mkdir -p /home/vagrant/Downloads/python3.6;
-wget -O /home/vagrant/Downloads/python3.6.tar.xz https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz;
-tar -xf /home/vagrant/Downloads/python3.6.tar.xz -C /home/vagrant/Downloads/python3.6;
-cd /home/vagrant/Downloads/python3.6/Python-3.6.1;
-./configure;
-make altinstall;
-rm /home/vagrant/Downloads/python3.6.tar.xz;
+if [ ! -f /usr/local/bin/python3.6 ]; then
+    mkdir -p /home/vagrant/Downloads/python3.6;
+    wget -O /home/vagrant/Downloads/python3.6.tar.xz https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz;
+    tar -xf /home/vagrant/Downloads/python3.6.tar.xz -C /home/vagrant/Downloads/python3.6;
+    cd /home/vagrant/Downloads/python3.6/Python-3.6.1;
+    ./configure;
+    make altinstall;
+    rm /home/vagrant/Downloads/python3.6.tar.xz;
+fi
 # **************************************************************************************
 
 # Restart services
