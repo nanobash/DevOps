@@ -82,6 +82,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Enable provisioning with bash script.
   config.vm.provision "shell", path: "./provision/bootstrap.sh"
 
+  # Enable miscellaneous configurations with python script
+  config.vm.provision "shell", path: "./provision/configure.py"
+
   # Enable provisioning with CFEngine. CFEngine Community packages are
   # automatically installed. For example, configure the host as a
   # policy server and optionally a policy file to run:
