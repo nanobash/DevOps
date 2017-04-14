@@ -40,28 +40,28 @@ wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add 
 
 # ********************  Basic Operations  **********************************************
 # Fixes broken dependencies
-sudo apt-get -f install;
+sudo apt -f install;
 # Removes unnecessary packages
 sudo apt-get -y autoremove;
 # Cleans repository cache
 sudo apt-get clean all;
 # Update packages
-sudo apt-get -y update;
+sudo apt -y update;
 # Upgrade packages
-sudo apt-get -y upgrade;
+sudo apt -y upgrade;
 # **************************************************************************************
 
 # Installs dependent packages
 sudo apt install zlib1g-dev;
 
 # Installs handy utilities
-sudo apt-get -y install htop pcregrep unzip siege;
+sudo apt -y install htop pcregrep unzip siege;
 
 # Installs nginx web server
-sudo apt-get -y install nginx;
+sudo apt -y install nginx;
 
 # Installs php7.0 and packages
-sudo apt-get -y install php7.0 php7.0-fpm php7.0-cli php7.0-xdebug \
+sudo apt -y install php7.0 php7.0-fpm php7.0-cli php7.0-xdebug \
                         php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql php7.0-pgsql;
 # **************************************************************************************
 
@@ -91,7 +91,7 @@ sudo mv "/tmp/php-pool-html.conf" "/etc/php/7.0/fpm/pool.d/html.conf";
 echo "mysql-community-server mysql-community-server/data-dir select ''" | sudo debconf-set-selections;
 echo "mysql-server mysql-community-server/root-pass password root" | sudo debconf-set-selections;
 echo "mysql-server mysql-community-server/re-root-pass password root" | sudo debconf-set-selections;
-sudo apt-get -y install mysql-server;
+sudo apt -y install mysql-server;
 
 sudo mv "/tmp/nginx-pma.conf" "/etc/nginx/sites-available/pma.conf";
 
@@ -108,7 +108,7 @@ fi
 # **************************************************************************************
 
 # Installs PostgreSQL 9.6, phpPgAdmin 5.1 and configures pga virtual host
-sudo apt-get -y install postgresql phppgadmin;
+sudo apt -y install postgresql phppgadmin;
 
 sudo mv "/tmp/nginx-pga.conf" "/etc/nginx/sites-available/pga.conf";
 
