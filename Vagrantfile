@@ -73,6 +73,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Uploads nginx html.conf to /tmp
   config.vm.provision "file", source: "./config/nginx/html.conf", destination: "/tmp/nginx-html.conf"
 
+  # Uploads nginx symfony.conf to /tmp
+    config.vm.provision "file", source: "./config/nginx/symfony.conf", destination: "/tmp/nginx-symfony.conf"
+
   # Uploads nginx pma.conf to /tmp
   config.vm.provision "file", source: "./config/nginx/pma.conf", destination: "/tmp/nginx-pma.conf"
 

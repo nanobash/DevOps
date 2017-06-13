@@ -72,9 +72,14 @@ if [ -f /etc/nginx/sites-available/default ]; then
 fi
 
 sudo mv "/tmp/nginx-html.conf" "/etc/nginx/sites-available/html.conf";
+sudo mv "/tmp/nginx-symfony.conf" "/etc/nginx/sites-available/symfony.conf";
 
 if [ ! -f /etc/nginx/sites-enabled/html.conf ]; then
     sudo ln -s "../sites-available/html.conf" "/etc/nginx/sites-enabled/";
+fi
+
+if [ ! -f /etc/nginx/sites-enabled/symfony.conf ]; then
+    sudo ln -s "../sites-available/symfony.conf" "/etc/nginx/sites-enabled/";
 fi
 # **************************************************************************************
 
