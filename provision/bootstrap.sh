@@ -52,8 +52,8 @@ sudo apt -y upgrade;
 # **************************************************************************************
 
 # Installs dependent packages
-sudo apt install zlib1g-dev;
-
+sudo apt install -y zlib1g-dev build-essential;
+sy
 # Installs handy utilities
 sudo apt -y install htop pcregrep unzip siege;
 
@@ -62,7 +62,8 @@ sudo apt -y install nginx;
 
 # Installs php7.0 and packages
 sudo apt -y install php7.0 php7.0-fpm php7.0-cli php7.0-xdebug \
-                        php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql php7.0-pgsql;
+                    php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mbstring php7.0-mysql php7.0-pgsql \
+                    php7.0-xml php7.0-intl;
 # **************************************************************************************
 
 # Configures nginx web server
